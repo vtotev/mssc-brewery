@@ -53,7 +53,7 @@ public class BeerControllerTest {
         given(beerService.getBeerById(any(UUID.class))).willReturn(validBeer);
         mockMvc.perform(get("/api/v1/beer/" + validBeer.getId().toString()).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id", is(validBeer.getId().toString())))
                 .andExpect(jsonPath("$.beerName", is("Beer1")));
     }
@@ -65,7 +65,7 @@ public class BeerControllerTest {
         BeerDto savedDto = BeerDto.builder().id(UUID.randomUUID()).beerName("New Beer").build();
         String beerDtoJson = objectMapper.writeValueAsString(beerDto);
         given(beerService.saveNewBeer(any())).willReturn(savedDto);
-        mockMvc.perform(post("/api/v1/beer/")
+        mockMvc.perform(post("/api/v1/beer")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(beerDtoJson))
                 .andExpect(status().isCreated());
